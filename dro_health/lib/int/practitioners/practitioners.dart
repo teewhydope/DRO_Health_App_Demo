@@ -1,6 +1,6 @@
+import 'package:dro_health/models/practitioner_screen.dart';
 import 'package:flutter/material.dart';
 
-import 'package:dro_health/data.dart';
 import 'package:flutter/services.dart';
 
 class PractitionersScreen extends StatefulWidget {

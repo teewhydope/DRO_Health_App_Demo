@@ -1,12 +1,21 @@
 import 'package:flutter/material.dart';
 
 class Model {
+  final String id;
   final String title;
   final String description;
   final String images;
   final Color color;
+  final String pages;
 
-  const Model({this.title, this.description, this.images, this.color});
+  const Model({
+    this.id,
+    this.title,
+    this.description,
+    this.images,
+    this.color,
+    this.pages,
+  });
 }
 
 class Gender {

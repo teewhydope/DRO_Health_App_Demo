@@ -1,7 +1,8 @@
 import 'dart:ui';
 
-import 'package:dro_health/data.dart';
+import 'package:dro_health/models/homepage.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 
 class Home extends StatefulWidget {
@@ -16,39 +17,41 @@ class _HomeState extends State<Home> {
   final specialized = DashboardSpecializedServices;
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        appBar: AppBar(
-          backgroundColor: Colors.white,
-          leading: Icon(
-            Icons.settings,
-            size: 30,
-            color: Colors.black,
-          ),
-          centerTitle: true,
-          actions: [
-            IconButton(
-              icon: Icon(
-                Icons.notifications,
-                size: 30,
-                color: Colors.black,
-              ),
-              onPressed: null,
-            )
-          ],
-          title: Text(
-            'Hi Ibrahim',
-            style: TextStyle(
-                color: Colors.black,
-                fontWeight: FontWeight.normal,
-                fontSize: 18),
-          ),
-          elevation: 0,
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+      statusBarColor: Colors.white,
+      // statusBarBrightness: Brightness.light, // as you need dark or light
+    ));
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        brightness: Brightness.light,
+        leading: Icon(
+          Icons.settings,
+          size: 30,
+          color: Colors.black,
         ),
-        backgroundColor: Colors.white70,
-        resizeToAvoidBottomInset: false,
-        body: SingleChildScrollView(
+        centerTitle: true,
+        actions: [
+          IconButton(
+            icon: Icon(
+              Icons.notifications,
+              size: 30,
+              color: Colors.black,
+            ),
+            onPressed: null,
+          )
+        ],
+        title: Text(
+          'Hi Ibrahim',
+          style: TextStyle(
+              color: Colors.black, fontWeight: FontWeight.normal, fontSize: 18),
+        ),
+        elevation: 0,
+      ),
+      backgroundColor: Colors.white70,
+      resizeToAvoidBottomInset: false,
+      body: SingleChildScrollView(
+        child: SafeArea(
           child: Container(
             margin: EdgeInsets.all(10),
             child: Column(
@@ -57,8 +60,9 @@ class _HomeState extends State<Home> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
-                        margin: EdgeInsets.symmetric(horizontal: 10),
-                        child: Text('Upcoming')),
+                      margin: EdgeInsets.symmetric(horizontal: 10),
+                      child: Text('Upcoming'),
+                    ),
                     SizedBox(
                       height: 10,
                     ),
@@ -66,7 +70,8 @@ class _HomeState extends State<Home> {
                       margin: EdgeInsets.all(10),
                       elevation: 8,
                       shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10)),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
                       child: Container(
                         margin: EdgeInsets.all(15),
                         height: 20,
@@ -96,30 +101,38 @@ class _HomeState extends State<Home> {
                         shrinkWrap: true,
                         scrollDirection: Axis.horizontal,
                         itemCount: services.length,
-                        itemBuilder: (BuildContext context, int index) => Card(
-                          elevation: 5,
-                          margin: EdgeInsets.all(10),
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10)),
-                          color: services[index].color,
-                          child: Container(
-                            margin: EdgeInsets.symmetric(vertical: 40),
-                            // height: 150,
-                            width: 130,
-                            child: Column(
-                              children: [
-                                Container(
-                                  height: 40,
-                                  width: 50,
-                                  child:
-                                      SvgPicture.asset(services[index].images),
-                                ),
-                                Text(
-                                  services[index].description,
-                                  textAlign: TextAlign.center,
-                                  softWrap: true,
-                                ),
-                              ],
+                        itemBuilder: (BuildContext context, int index) =>
+                            GestureDetector(
+                          onTap: () => Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => services[index].pages),
+                          ),
+                          child: Card(
+                            elevation: 5,
+                            margin: EdgeInsets.all(10),
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10)),
+                            color: services[index].color,
+                            child: Container(
+                              margin: EdgeInsets.symmetric(vertical: 40),
+                              // height: 150,
+                              width: 130,
+                              child: Column(
+                                children: [
+                                  Container(
+                                    height: 40,
+                                    width: 50,
+                                    child: SvgPicture.asset(
+                                        services[index].images),
+                                  ),
+                                  Text(
+                                    services[index].description,
+                                    textAlign: TextAlign.center,
+                                    softWrap: true,
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
                         ),
