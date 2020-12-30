@@ -8,7 +8,8 @@ class DrugProducts with ChangeNotifier {
       title: 'Kezitil Susp.',
       description: 'Cefuroxime Axetil',
       quantity: 'Oral Suspension - 125mg',
-      price: '₦1820',
+      price: 1820,
+      //'₦1820',
       imageUrl:
           'https://www.emzorpharma.com/wp-content/uploads/2019/04/Kezitil-suspension-100ml.png',
     ),
@@ -17,7 +18,7 @@ class DrugProducts with ChangeNotifier {
       title: 'Kezitil',
       description: 'Cefuroxime Axetil',
       quantity: 'Tablet - 250mg',
-      price: '₦1140',
+      price: 1140,
       imageUrl:
           'https://www.emzorpharma.com/wp-content/uploads/2020/01/52-Kezitil-250-View-01-1024x505.png',
     ),
@@ -26,7 +27,7 @@ class DrugProducts with ChangeNotifier {
       title: 'Garlic Oil',
       description: 'Garlic Oil',
       quantity: 'Soft Gel - 650mg',
-      price: '₦385',
+      price: 385,
       imageUrl:
           'https://www.emzorpharma.com/wp-content/uploads/2019/03/GARLIC-PACK-650mg.png',
     ),
@@ -35,7 +36,7 @@ class DrugProducts with ChangeNotifier {
       title: 'Folic Acid',
       description: 'Folic Acid',
       quantity: 'Tablet - 5mg',
-      price: '₦170',
+      price: 170,
       imageUrl:
           'https://www.onehealthng.com/storage/products/15478341755f365b35784bdproduct.png',
     ),
@@ -44,7 +45,7 @@ class DrugProducts with ChangeNotifier {
       title: 'Kezitil',
       description: 'Cefuroxime Axetil',
       quantity: 'Tablet - 250mg',
-      price: '₦1140',
+      price: 1140,
       imageUrl:
           'https://www.emzorpharma.com/wp-content/uploads/2020/01/52-Kezitil-250-View-01-1024x505.png',
     ),
@@ -53,7 +54,7 @@ class DrugProducts with ChangeNotifier {
       title: 'Garlic Oil',
       description: 'Garlic Oil',
       quantity: 'Soft Gel - 650mg',
-      price: '₦385',
+      price: 385,
       imageUrl:
           'https://www.emzorpharma.com/wp-content/uploads/2019/03/GARLIC-PACK-650mg.png',
     ),
@@ -62,7 +63,7 @@ class DrugProducts with ChangeNotifier {
       title: 'Folic Acid',
       description: 'Folic Acid',
       quantity: 'Tablet - 5mg',
-      price: '₦170',
+      price: 170,
       imageUrl:
           'https://www.onehealthng.com/storage/products/15478341755f365b35784bdproduct.png',
     ),
@@ -75,5 +76,9 @@ class DrugProducts with ChangeNotifier {
   void addProduct() {
     //_allDrugProducts.add(value);
     notifyListeners();
+  }
+
+  List<DrugProduct> get favoriteItems {
+    return _allDrugProducts.where((drugProd) => drugProd.isFavorite).toList();
   }
 }

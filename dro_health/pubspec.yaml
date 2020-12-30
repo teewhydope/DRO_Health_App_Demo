@@ -33,6 +33,8 @@ dependencies:
   provider: ^4.3.2+3
   email_validator: ^1.0.6
   sliding_sheet: ^0.4.1
+  expandable: ^4.1.4
+  marquee: ^1.6.1
   
 
   

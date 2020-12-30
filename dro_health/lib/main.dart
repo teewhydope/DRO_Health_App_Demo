@@ -5,6 +5,8 @@ import 'package:dro_health/int/appointments/routes/Messages/app_messages.dart';
 import 'package:dro_health/int/appointments/routes/Notes/app_notes.dart';
 import 'package:dro_health/int/appointments/routes/Orders/app_orders.dart';
 import 'package:dro_health/int/appointments/routes/Prescriptions/app_presc.dart';
+import 'package:dro_health/int/home/routes/order_med/product_details.dart';
+import 'package:dro_health/providers/cart.dart';
 import 'package:dro_health/providers/drug_products.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -19,6 +21,7 @@ import 'ext/auth/register/signup1/steps/signup_step_6.dart';
 import 'ext/splash_screen.dart';
 import 'int/home/home.dart';
 import 'int/tab_screen.dart';
+import 'models/drug_product.dart';
 
 void main() {
   runApp(MyApp());
@@ -27,12 +30,17 @@ void main() {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (context) => DrugProducts(),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (context) => DrugProducts()),
+        ChangeNotifierProvider(create: (context) => Cart()),
+        // ignore: missing_required_param
+        ChangeNotifierProvider(create: (context) => (DrugProduct()))
+      ],
       child: MaterialApp(
         title: 'Flutter Demo',
         theme: ThemeData(
-          primarySwatch: Colors.blue,
+          primarySwatch: Colors.purple,
         ),
         home: SplashScreen(),
         routes: {
@@ -55,6 +63,7 @@ class MyApp extends StatelessWidget {
           AppDiagnosticsScreen.routename: (context) => AppDiagnosticsScreen(),
           AppOrdersScreen.routename: (context) => AppOrdersScreen(),
           Home.routename: (context) => Home(),
+          ProductDetails.routename: (context) => ProductDetails(),
         },
       ),
     );

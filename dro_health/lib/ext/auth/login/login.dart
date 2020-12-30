@@ -85,7 +85,7 @@ class _LoginState extends State<Login> {
                         children: [
                           RaisedButton(
                             padding: EdgeInsets.symmetric(
-                                horizontal: 150, vertical: 18),
+                                horizontal: 140, vertical: 18),
                             color: Color.fromRGBO(12, 184, 182, 1),
                             shape: RoundedRectangleBorder(
                               borderRadius: new BorderRadius.circular(25.0),
@@ -99,7 +99,7 @@ class _LoginState extends State<Login> {
                                 'Login',
                                 style: TextStyle(
                                   color: Colors.white,
-                                  fontSize: 30,
+                                  fontSize: 18,
                                 ),
                               ),
                             ),

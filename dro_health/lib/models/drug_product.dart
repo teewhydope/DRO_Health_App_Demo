@@ -1,13 +1,15 @@
 import 'package:flutter/foundation.dart';
 
-class DrugProduct {
+class DrugProduct with ChangeNotifier {
   final String id;
   final String title;
   final String description;
   final String quantity;
-  final String price;
+  final int price;
   final String imageUrl;
-  bool isFavorite;
+  var isFavorite;
+  var cartAdded;
+  var expanded;
 
   DrugProduct({
     @required this.id,
@@ -16,6 +18,23 @@ class DrugProduct {
     @required this.quantity,
     @required this.price,
     @required this.imageUrl,
-    this.isFavorite,
+    this.isFavorite = false,
+    this.cartAdded = false,
+    this.expanded = false,
   });
+
+  void toggleFavoriteStatus() {
+    isFavorite = !isFavorite;
+    notifyListeners();
+  }
+
+  void toggleCartStatus() {
+    cartAdded = !cartAdded;
+    notifyListeners();
+  }
+
+  void toggleExpandedStatus() {
+    expanded = !expanded;
+    notifyListeners();
+  }
 }
