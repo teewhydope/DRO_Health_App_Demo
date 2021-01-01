@@ -4,7 +4,7 @@ class DrugProduct with ChangeNotifier {
   final String id;
   final String title;
   final String description;
-  final String quantity;
+  final String mgQuantity;
   final int price;
   final String imageUrl;
   var isFavorite;
@@ -15,7 +15,7 @@ class DrugProduct with ChangeNotifier {
     @required this.id,
     @required this.title,
     @required this.description,
-    @required this.quantity,
+    @required this.mgQuantity,
     @required this.price,
     @required this.imageUrl,
     this.isFavorite = false,

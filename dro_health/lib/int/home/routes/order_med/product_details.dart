@@ -84,7 +84,7 @@ class _ProductDetailsState extends State<ProductDetails> {
               Align(
                 alignment: Alignment.centerLeft,
                 child: Text(
-                  productsData.quantity,
+                  productsData.mgQuantity,
                   style: TextStyle(fontSize: 20),
                 ),
               ),

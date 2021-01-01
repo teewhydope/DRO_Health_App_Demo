@@ -51,7 +51,7 @@ class GridCards extends StatelessWidget {
                 Align(
                   alignment: Alignment.centerLeft,
                   child: Text(
-                    product.quantity,
+                    product.mgQuantity,
                     style: TextStyle(
                       color: Colors.grey,
                     ),

@@ -4,6 +4,7 @@ import 'package:dro_health/int/appointments/routes/Diagnostics/app_diagnostics.d
 import 'package:dro_health/int/appointments/routes/Messages/app_messages.dart';
 import 'package:dro_health/int/appointments/routes/Notes/app_notes.dart';
 import 'package:dro_health/int/appointments/routes/Orders/app_orders.dart';
+import 'package:dro_health/int/appointments/routes/Orders/routes/add_edit_product.dart';
 import 'package:dro_health/int/appointments/routes/Prescriptions/app_presc.dart';
 import 'package:dro_health/int/home/routes/order_med/product_details.dart';
 import 'package:dro_health/providers/cart.dart';
@@ -40,8 +41,13 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         title: 'Flutter Demo',
         theme: ThemeData(
-          primarySwatch: Colors.purple,
-        ),
+            // primaryColor: Colors.purple,
+            //primarySwatch: Colors.purple,
+            /* appBarTheme: AppBarTheme(
+            color: Colors.purple,
+            backgroundColor: Colors.purple,
+          ), */
+            ),
         home: SplashScreen(),
         routes: {
           // When navigating to the "/" route, build the FirstScreen widget.
@@ -64,6 +70,7 @@ class MyApp extends StatelessWidget {
           AppOrdersScreen.routename: (context) => AppOrdersScreen(),
           Home.routename: (context) => Home(),
           ProductDetails.routename: (context) => ProductDetails(),
+          AddEditProduct.routename: (context) => AddEditProduct(),
         },
       ),
     );

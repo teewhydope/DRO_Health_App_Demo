@@ -7,7 +7,7 @@ class DrugProducts with ChangeNotifier {
       id: 'dp1',
       title: 'Kezitil Susp.',
       description: 'Cefuroxime Axetil',
-      quantity: 'Oral Suspension - 125mg',
+      mgQuantity: 'Oral Suspension - 125mg',
       price: 1820,
       //'₦1820',
       imageUrl:
@@ -17,7 +17,7 @@ class DrugProducts with ChangeNotifier {
       id: 'dp2',
       title: 'Kezitil',
       description: 'Cefuroxime Axetil',
-      quantity: 'Tablet - 250mg',
+      mgQuantity: 'Tablet - 250mg',
       price: 1140,
       imageUrl:
           'https://www.emzorpharma.com/wp-content/uploads/2020/01/52-Kezitil-250-View-01-1024x505.png',
@@ -26,7 +26,7 @@ class DrugProducts with ChangeNotifier {
       id: 'dp3',
       title: 'Garlic Oil',
       description: 'Garlic Oil',
-      quantity: 'Soft Gel - 650mg',
+      mgQuantity: 'Soft Gel - 650mg',
       price: 385,
       imageUrl:
           'https://www.emzorpharma.com/wp-content/uploads/2019/03/GARLIC-PACK-650mg.png',
@@ -35,7 +35,7 @@ class DrugProducts with ChangeNotifier {
       id: 'dp4',
       title: 'Folic Acid',
       description: 'Folic Acid',
-      quantity: 'Tablet - 5mg',
+      mgQuantity: 'Tablet - 5mg',
       price: 170,
       imageUrl:
           'https://www.onehealthng.com/storage/products/15478341755f365b35784bdproduct.png',
@@ -44,7 +44,7 @@ class DrugProducts with ChangeNotifier {
       id: 'dp5',
       title: 'Kezitil',
       description: 'Cefuroxime Axetil',
-      quantity: 'Tablet - 250mg',
+      mgQuantity: 'Tablet - 250mg',
       price: 1140,
       imageUrl:
           'https://www.emzorpharma.com/wp-content/uploads/2020/01/52-Kezitil-250-View-01-1024x505.png',
@@ -53,7 +53,7 @@ class DrugProducts with ChangeNotifier {
       id: 'dp6',
       title: 'Garlic Oil',
       description: 'Garlic Oil',
-      quantity: 'Soft Gel - 650mg',
+      mgQuantity: 'Soft Gel - 650mg',
       price: 385,
       imageUrl:
           'https://www.emzorpharma.com/wp-content/uploads/2019/03/GARLIC-PACK-650mg.png',
@@ -62,7 +62,7 @@ class DrugProducts with ChangeNotifier {
       id: 'dp7',
       title: 'Folic Acid',
       description: 'Folic Acid',
-      quantity: 'Tablet - 5mg',
+      mgQuantity: 'Tablet - 5mg',
       price: 170,
       imageUrl:
           'https://www.onehealthng.com/storage/products/15478341755f365b35784bdproduct.png',
@@ -73,8 +73,15 @@ class DrugProducts with ChangeNotifier {
     return [..._allDrugProducts];
   }
 
-  void addProduct() {
-    //_allDrugProducts.add(value);
+  void addProduct(DrugProduct drugProduct) {
+    final addNewProduct = DrugProduct(
+        id: DateTime.now().toString(),
+        description: drugProduct.description,
+        imageUrl: drugProduct.imageUrl,
+        price: drugProduct.price,
+        title: drugProduct.title,
+        mgQuantity: drugProduct.mgQuantity);
+    _allDrugProducts.insert(0, addNewProduct);
     notifyListeners();
   }
 

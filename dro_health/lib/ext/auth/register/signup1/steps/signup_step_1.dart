@@ -14,29 +14,27 @@ class Step1 extends StatefulWidget {
 class _Step1State extends State<Step1> {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        resizeToAvoidBottomInset: true,
-        body: SafeArea(
-          child: SingleChildScrollView(
-            physics: ClampingScrollPhysics(),
-            child: Container(
-              //color: Colors.grey,
-              margin: EdgeInsets.all(25),
-              width: double.infinity,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Container(
-                      height: MediaQuery.of(context).size.height * 0.45,
-                      child: StepQuestion1()),
-                  Container(
-                      height: MediaQuery.of(context).size.height * 0.35,
-                      child: Container(
-                          height: MediaQuery.of(context).size.height * 0.2,
-                          child: FormFieldStep1())),
-                ],
-              ),
+    return Scaffold(
+      resizeToAvoidBottomInset: true,
+      body: SafeArea(
+        child: SingleChildScrollView(
+          physics: ClampingScrollPhysics(),
+          child: Container(
+            //color: Colors.grey,
+            margin: EdgeInsets.all(25),
+            width: double.infinity,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Container(
+                    height: MediaQuery.of(context).size.height * 0.45,
+                    child: StepQuestion1()),
+                Container(
+                    height: MediaQuery.of(context).size.height * 0.35,
+                    child: Container(
+                        height: MediaQuery.of(context).size.height * 0.2,
+                        child: FormFieldStep1())),
+              ],
             ),
           ),
         ),
