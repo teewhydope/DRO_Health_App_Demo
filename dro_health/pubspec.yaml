@@ -35,6 +35,9 @@ dependencies:
   sliding_sheet: ^0.4.1
   expandable: ^4.1.4
   marquee: ^1.6.1
+  http: ^0.12.2
+  ars_progress_dialog: ^0.1.2
+
   
 
   

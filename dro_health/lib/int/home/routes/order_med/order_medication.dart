@@ -26,7 +26,7 @@ class OrderMedication extends StatelessWidget {
       statusBarBrightness: Brightness.light, // as you need dark or light
     ));
     final cart = Provider.of<Cart>(context, listen: false);
-    final product = Provider.of<DrugProduct>(context);
+    Provider.of<DrugProduct>(context);
 
     return Scaffold(
       body: SafeArea(

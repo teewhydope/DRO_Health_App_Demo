@@ -38,7 +38,7 @@ class ManageOrders extends StatelessWidget {
                 child: Row(
                   children: [
                     IconButton(
-                        icon: Icon(Icons.edit),
+                        icon: Icon(Icons.edit, color: Colors.purple),
                         onPressed: () {
                           Navigator.of(context).pushNamed(
                               AddEditProduct.routename,
@@ -50,7 +50,10 @@ class ManageOrders extends StatelessWidget {
                           Icons.delete,
                           color: Colors.red,
                         ),
-                        onPressed: () {}),
+                        onPressed: () {
+                          productsData.deleteProducts(
+                              productsData.allDrugProducts[index].id);
+                        }),
                   ],
                 ),
               ),
