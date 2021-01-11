@@ -1,6 +1,6 @@
 # DRO_Health_App_Demo
  
- 02/01/2021
+ **02/01/2021**
  
   added image fetching from firebase
   
@@ -10,7 +10,10 @@
  
  more ui designs...
  
- 11/01/2021
+ 
+ 
+ **11/01/2021**
+ 
  added firestore signup & login
  
  added more ui tweaks(flare animation, slide transition)
