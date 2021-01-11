@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as htttp;
+import 'dart:convert';
 
 class CartItem {
   final String id;
@@ -28,9 +30,46 @@ class Cart with ChangeNotifier {
 
   bool get expanded => false;
 
-  removeItem(String drugProdId) {
+  Future<void> removeItem(String drugProdId) async {
     _cartItems.remove(drugProdId);
+    final url =
+        'https://dro-app-demo-default-rtdb.firebaseio.com/CartItems/$drugProdId.json';
+    await htttp.delete(url);
     notifyListeners();
+  }
+
+  Future<void> fetchAndSetCartItems() async {
+    const url =
+        'https://dro-app-demo-default-rtdb.firebaseio.com/CartItems.json';
+    final response = await htttp.get(url);
+    // json.decode(url);
+    print(response.body);
+    // try {
+    //   final response = await htttp.get(url);
+    //   // print(json.decode(response.body));
+    final List<CartItem> loadedCartItems = [];
+    final extractedData =
+        json.decode(response.body)['name'] as Map<String, dynamic>;
+    if (extractedData == null) {
+      return;
+    }
+    extractedData.forEach((cartId, cartItemsData) {
+      loadedCartItems.add(CartItem(
+          id: cartId,
+          title: cartItemsData['title'],
+          description: cartItemsData['description'],
+          quantity: cartItemsData['quantity'],
+          price: cartItemsData['price'],
+          image: cartItemsData['image']));
+    });
+    print(_cartItems);
+    _cartItems = {json.decode(response.body)['name'], loadedCartItems}
+        as Map<String, CartItem>;
+    print(_cartItems);
+    notifyListeners();
+    // } catch (error) {
+    //   throw error;
+    // }
   }
 
   void removeSingleCartItem(String drugProdId) {
@@ -65,18 +104,33 @@ class Cart with ChangeNotifier {
     return _cartItems.length;
   }
 
-  void addItemToCart(
+  Future<void> addItemToCart(
     String drugProdId,
     int price,
     String title,
     String description,
     String image,
-  ) {
-    if (_cartItems.containsKey(drugProdId)) {
+  ) async {
+    final url =
+        'https://dro-app-demo-default-rtdb.firebaseio.com/CartItems.json';
+    final response = await htttp.post(
+      url,
+      body: json.encode(
+        {
+          'id': drugProdId,
+          'title': title,
+          'price': price,
+          'description': description,
+          'imageUrl': image,
+          'quantity': _cartItems.length,
+        },
+      ),
+    );
+    if (_cartItems.containsKey(json.decode(response.body)['name'])) {
       _cartItems.update(
-        drugProdId,
+        json.decode(response.body)['name'],
         (existingCartItem) => CartItem(
-            id: existingCartItem.id,
+            id: json.decode(response.body)['name'],
             title: existingCartItem.title,
             description: existingCartItem.description,
             quantity: existingCartItem.quantity + 1,
@@ -85,9 +139,9 @@ class Cart with ChangeNotifier {
       );
     } else {
       _cartItems.putIfAbsent(
-        drugProdId,
+        json.decode(response.body)['name'],
         () => CartItem(
-            id: drugProdId,
+            id: json.decode(response.body)['name'],
             title: title,
             description: description,
             quantity: 1,

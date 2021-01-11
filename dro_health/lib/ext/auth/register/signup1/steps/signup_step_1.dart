@@ -23,18 +23,18 @@ class _Step1State extends State<Step1> {
             //color: Colors.grey,
             margin: EdgeInsets.all(25),
             width: double.infinity,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Container(
-                    height: MediaQuery.of(context).size.height * 0.45,
-                    child: StepQuestion1()),
-                Container(
-                    height: MediaQuery.of(context).size.height * 0.35,
-                    child: Container(
-                        height: MediaQuery.of(context).size.height * 0.2,
-                        child: FormFieldStep1())),
-              ],
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Container(
+                      height: MediaQuery.of(context).size.height * 0.5,
+                      child: StepQuestion1()),
+                  Container(
+                      height: MediaQuery.of(context).size.height * 0.5,
+                      child: FormFieldStep1()),
+                ],
+              ),
             ),
           ),
         ),

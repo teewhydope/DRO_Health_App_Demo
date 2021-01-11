@@ -1,38 +1,33 @@
 import 'package:dro_health/ext/auth/register/signup1/steps/signup_step_2.dart';
-import 'package:dro_health/models/registration_data.dart';
+import 'package:dro_health/providers/auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-
-List<GlobalKey<FormState>> _formKeys = [
-  GlobalKey<FormState>(),
-  GlobalKey<FormState>(),
-  GlobalKey<FormState>(),
-  GlobalKey<FormState>(),
-];
+import 'package:provider/provider.dart';
 
 class FormFieldStep1 extends StatefulWidget {
-  static var _firstnamecontroller = TextEditingController();
-  static var _lastnamecontroller = TextEditingController();
+  //final fullNames = UserDataReg;
 
   @override
   _FormFieldStep1State createState() => _FormFieldStep1State();
 }
 
 class _FormFieldStep1State extends State<FormFieldStep1> {
-  final regData = RegData();
+  TextEditingController _firstnamecontroller = TextEditingController();
+  TextEditingController _lastnamecontroller = TextEditingController();
+
+  final _formKey1 = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
+    final personalData = Provider.of<UserDataReg>(context);
+
     return Column(
       children: [
         Form(
-          key: _formKeys[0],
+          key: _formKey1,
           child: Column(
             children: [
               TextFormField(
-                onSaved: (String value) {
-                  regData.firstName = value;
-                },
                 validator: (value) {
                   if (value.isEmpty || value.length < 2) {
                     return 'Please enter your first name';
@@ -40,23 +35,23 @@ class _FormFieldStep1State extends State<FormFieldStep1> {
                   return null;
                 },
                 textInputAction: TextInputAction.next,
-                controller: FormFieldStep1._firstnamecontroller,
+                controller: _firstnamecontroller,
                 decoration: InputDecoration(
                   hintText: 'First name',
                   suffixIcon: IconButton(
                     onPressed: () => this.setState(() {
-                      FormFieldStep1._firstnamecontroller.clear();
+                      _firstnamecontroller.clear();
                     }),
                     icon: Icon(Icons.clear),
                   ),
                 ),
               ),
               SizedBox(
-                height: 20,
+                height: MediaQuery.of(context).size.height * 0.02,
               ),
               TextFormField(
                 onSaved: (String value) {
-                  regData.lastName = value;
+                  personalData.lastName = value;
                 },
                 validator: (value) {
                   if (value.isEmpty || value.length < 2) {
@@ -65,16 +60,19 @@ class _FormFieldStep1State extends State<FormFieldStep1> {
                   return null;
                 },
                 textInputAction: TextInputAction.done,
-                controller: FormFieldStep1._lastnamecontroller,
+                controller: _lastnamecontroller,
                 decoration: InputDecoration(
                   hintText: 'Last name',
                   suffixIcon: IconButton(
                     onPressed: () => this.setState(() {
-                      FormFieldStep1._lastnamecontroller.clear();
+                      _lastnamecontroller.clear();
                     }),
                     icon: Icon(Icons.clear),
                   ),
                 ),
+              ),
+              SizedBox(
+                height: MediaQuery.of(context).size.height * 0.12,
               ),
               Column(
                 children: [
@@ -87,7 +85,15 @@ class _FormFieldStep1State extends State<FormFieldStep1> {
                       //side: BorderSide(color: Colors.black),
                     ),
                     onPressed: () {
-                      onSubmitStep1Data();
+                      final isValid = _formKey1.currentState.validate();
+                      if (!isValid) {
+                        return;
+                      }
+                      _formKey1.currentState.save();
+                      personalData.firstName = _firstnamecontroller.text;
+                      personalData.lastName = _lastnamecontroller.text;
+                      print(_firstnamecontroller.text);
+                      print(_lastnamecontroller.text);
                       Navigator.push(
                         context,
                         MaterialPageRoute(
@@ -104,7 +110,9 @@ class _FormFieldStep1State extends State<FormFieldStep1> {
                       ),
                     ),
                   ),
-                  SizedBox(height: 10),
+                  SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.02,
+                  ),
                   RichText(
                     text: TextSpan(
                       text: 'Already have an account?',
@@ -128,22 +136,5 @@ class _FormFieldStep1State extends State<FormFieldStep1> {
         ),
       ],
     );
-  }
-
-  void showSnackBarMessage(String message, [MaterialColor color = Colors.red]) {
-    Scaffold.of(context).showSnackBar(SnackBar(content: Text(message)));
-  }
-
-  void onSubmitStep1Data() {
-    final FormState formState0 = _formKeys[0].currentState;
-
-    if (!formState0.validate()) {
-      showSnackBarMessage('Please enter correct data');
-      return;
-    } else {
-      formState0.save();
-      //FormFieldStep1._firstnamecontroller.text;
-      //FormFieldStep1._lastnamecontroller.text;
-    }
   }
 }

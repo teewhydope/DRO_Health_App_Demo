@@ -6,7 +6,7 @@ class StepQuestion1 extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(children: [
       Container(
-        height: MediaQuery.of(context).size.height * 0.2,
+        height: MediaQuery.of(context).size.height * 0.15,
         width: double.infinity,
         child: Row(
           children: [

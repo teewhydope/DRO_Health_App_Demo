@@ -13,6 +13,7 @@ class Acknowledge extends StatelessWidget {
       statusBarColor: isGreen,
       statusBarBrightness: Brightness.dark, // as you need dark or light
     ));
+    //final userData = UserDataReg(null, null, null, null, null, null, null);
     return Scaffold(
       body: Container(
         padding: EdgeInsets.all(20),

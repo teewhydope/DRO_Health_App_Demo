@@ -1,10 +1,38 @@
-import 'package:dro_health/int/tab_screen.dart';
+import 'package:dro_health/ext/auth/register/signup1/steps/success_screen.dart';
+import 'package:dro_health/providers/auth.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
 import 'package:step_progress_indicator/step_progress_indicator.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
-class Step6 extends StatelessWidget {
+class Step6 extends StatefulWidget {
   static const routename = '/step6';
+
+  @override
+  _Step6State createState() => _Step6State();
+}
+
+class _Step6State extends State<Step6> {
+  final _formKey6 = GlobalKey<FormState>();
+  var _isLoading = false;
+
+  String _email;
+  String _password;
+  String _firstname;
+  String _lastname;
+  String _dob;
+  String _gender;
+  String _city;
+  String _state;
+  String _phone;
+  String _errorEmail;
+
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -53,24 +81,74 @@ class Step6 extends StatelessWidget {
                 ),
               ],
             ),
-            Container(
-              height: 200,
-              child: Form(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    TextFormField(
-                      decoration: InputDecoration(hintText: 'Email address'),
+            Form(
+              key: _formKey6,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  TextFormField(
+                    onSaved: (String value) {
+                      _email = value;
+                    },
+                    validator: (value) {
+                      if (value.isEmpty || !value.contains('@')) {
+                        return 'Please enter a valid email';
+                      }
+                      return null;
+                    },
+                    keyboardType: TextInputType.emailAddress,
+                    textInputAction: TextInputAction.done,
+                    controller: _emailController,
+                    decoration: InputDecoration(
+                      errorText: _errorEmail,
+                      hintText: 'Email address',
+                      suffixIcon: IconButton(
+                        onPressed: () => this.setState(() {
+                          _emailController.clear();
+                        }),
+                        icon: Icon(Icons.clear),
+                      ),
                     ),
-                    TextFormField(
-                      decoration: InputDecoration(hintText: 'Password'),
+                  ),
+                  TextFormField(
+                    onSaved: (value) {
+                      _password = value;
+                    },
+                    validator: (value) {
+                      Pattern pattern =
+                          r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$';
+                      RegExp regex = new RegExp(pattern);
+                      print(value);
+                      if (value.isEmpty || value.length < 8) {
+                        return 'Password must be 8 digits long';
+                      } else {
+                        if (!regex.hasMatch(value)) {
+                          return 'Minimum 1 Upper case\nMinimum 1 Lower case\nMinimum 1 Numeric Number\nMinimum 1 Special Character\nCommon Allowed Characters ( ! @ # \$ & * ~ )\n';
+                        }
+                        return null;
+                      }
+                    },
+                    obscureText: true,
+                    textInputAction: TextInputAction.done,
+                    controller: _passwordController,
+                    decoration: InputDecoration(
+                      hintText: 'Password',
                     ),
-                    TextFormField(
-                      decoration:
-                          InputDecoration(hintText: 'Password confirmation'),
+                  ),
+                  TextFormField(
+                    validator: (value) {
+                      if (value != _passwordController.text) {
+                        return 'Passwords do not match';
+                      }
+                      return null;
+                    },
+                    obscureText: true,
+                    textInputAction: TextInputAction.done,
+                    decoration: InputDecoration(
+                      hintText: 'Confirm password',
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
             Column(
@@ -103,25 +181,93 @@ class Step6 extends StatelessWidget {
                     ],
                   ),
                 ),
-                RaisedButton(
-                  padding: EdgeInsets.symmetric(horizontal: 150, vertical: 18),
-                  color: Color.fromRGBO(12, 184, 182, 1),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: new BorderRadius.circular(25.0),
-                    //side: BorderSide(color: Colors.black),
-                  ),
-                  onPressed: () {
-                    Navigator.pushNamed(context, Tabscreen.routename);
-                  },
-                  child: FittedBox(
-                    child: Text(
-                      'Next',
-                      style: TextStyle(
-                        color: Colors.white,
+                _isLoading
+                    ? CircularProgressIndicator()
+                    : RaisedButton(
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 150, vertical: 18),
+                        color: Color.fromRGBO(12, 184, 182, 1),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: new BorderRadius.circular(25.0),
+                          //side: BorderSide(color: Colors.black),
+                        ),
+                        onPressed: () async {
+                          final isValid = _formKey6.currentState.validate();
+                          if (!isValid) {
+                            return;
+                          }
+                          _formKey6.currentState.save();
+                          final persData =
+                              Provider.of<UserDataReg>(context, listen: false);
+                          _firstname = persData.firstName.trim();
+                          _lastname = persData.lastName.trim();
+                          _dob = persData.dateOfBirth.toIso8601String();
+                          _gender = persData.gender;
+                          _city = persData.city.trim();
+                          _state = persData.state.trim();
+                          _phone = persData.phoneNumber.toString().trim();
+
+                          FirebaseAuth _auth = FirebaseAuth.instance;
+                          final CollectionReference userCollection =
+                              FirebaseFirestore.instance.collection('users');
+
+                          //creates user with email and password
+                          try {
+                            setState(() {
+                              _isLoading = true;
+                            });
+                            UserCredential result =
+                                await _auth.createUserWithEmailAndPassword(
+                                    email: _email, password: _password);
+                            // getting user.id to set additional information
+                            User user = result.user;
+                            await userCollection.doc(user.uid).set({
+                              'First Name': _firstname,
+                              'Last Name': _lastname,
+                              'Date of Birth': _dob,
+                              'Gender': _gender,
+                              'City': _city,
+                              'State': _state,
+                              'Phone Number': _phone,
+                              'email': _email,
+                            });
+                            Navigator.pushNamedAndRemoveUntil(
+                                context,
+                                Success.routename,
+                                (Route<dynamic> route) => false);
+                          } on FirebaseAuthException catch (error) {
+                            var message =
+                                'An Error occured, please check your credentials!';
+
+                            if (error.message != null) {
+                              message = error.message;
+                            }
+                            print(error.message);
+
+                            setState(() {
+                              _errorEmail = error.message;
+                              return;
+                            });
+                            print('hi ${error.code}');
+                            setState(() {
+                              _isLoading = false;
+                            });
+                          } catch (err) {
+                            print(err);
+                            setState(() {
+                              _isLoading = false;
+                            });
+                          }
+                        },
+                        child: FittedBox(
+                          child: Text(
+                            'Next',
+                            style: TextStyle(
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
                       ),
-                    ),
-                  ),
-                ),
               ],
             ),
           ],

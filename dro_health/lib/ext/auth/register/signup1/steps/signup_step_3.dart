@@ -1,9 +1,12 @@
 import 'package:dro_health/ext/auth/register/signup1/widgets/custom_gender_radio.dart';
+import 'package:dro_health/providers/auth.dart';
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:provider/provider.dart';
 import 'package:step_progress_indicator/step_progress_indicator.dart';
 import '../../../../../model.dart';
 import 'signup_step_4.dart';
+import 'package:intl/intl.dart';
 
 class Step3 extends StatefulWidget {
   @override
@@ -11,6 +14,8 @@ class Step3 extends StatefulWidget {
 }
 
 class _Step3State extends State<Step3> {
+  var selectedName;
+  var selectedGender = false;
   List<Gender> genders = [];
   @override
   void initState() {
@@ -22,6 +27,8 @@ class _Step3State extends State<Step3> {
 
   @override
   Widget build(BuildContext context) {
+    final personalData = Provider.of<UserDataReg>(context);
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
@@ -71,8 +78,7 @@ class _Step3State extends State<Step3> {
                 shrinkWrap: true,
                 itemCount: genders.length,
                 itemBuilder: (context, index) {
-                  return InkWell(
-                    //splashColor: Colors.pinkAccent,
+                  return GestureDetector(
                     onTap: () {
                       setState(
                         () {
@@ -81,6 +87,10 @@ class _Step3State extends State<Step3> {
                           genders[index].isSelected = true;
                         },
                       );
+                      selectedGender = genders[index].isSelected;
+                      print(selectedGender);
+                      selectedName = genders[index].name;
+                      print(selectedName);
                     },
                     child: CustomRadio(genders[index]),
                   );
@@ -95,7 +105,14 @@ class _Step3State extends State<Step3> {
                 //side: BorderSide(color: Colors.black),
               ),
               onPressed: () {
-                Navigator.pushNamed(context, Step4.routename);
+                if (selectedGender == false) {
+                  return;
+                } else {
+                  Navigator.pushNamed(context, Step4.routename);
+
+                  personalData.gender = selectedName;
+                  print(selectedName);
+                }
               },
               child: FittedBox(
                 child: Text(

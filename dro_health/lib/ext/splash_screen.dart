@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:dro_health/int/tab_screen.dart';
 import 'package:flutter/material.dart';
 
 import 'welcome.dart';
@@ -29,7 +30,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
   void navigationPage() {
     Navigator.pushReplacement(context,
-        MaterialPageRoute(builder: (BuildContext context) => Welcome()));
+        MaterialPageRoute(builder: (BuildContext context) => Tabscreen()));
   }
 
   @override

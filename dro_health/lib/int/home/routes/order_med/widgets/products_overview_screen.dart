@@ -16,6 +16,25 @@ class ProductsOverViewScreen extends StatefulWidget {
 
 class _ProductsOverViewScreenState extends State<ProductsOverViewScreen> {
   var showOnlyFavorites = false;
+  var _isInit = true;
+  var _isLoading = false;
+
+  @override
+  void didChangeDependencies() {
+    if (_isInit) {
+      setState(() {
+        _isLoading = true;
+      });
+      Provider.of<DrugProducts>(context).fetchAndSetProduct().then(
+            (_) => setState(() {
+              _isLoading = false;
+            }),
+          );
+    }
+    _isInit = false;
+    super.didChangeDependencies();
+  }
+
   @override
   Widget build(BuildContext context) {
     final productsData = Provider.of<DrugProducts>(context);
@@ -77,26 +96,28 @@ class _ProductsOverViewScreenState extends State<ProductsOverViewScreen> {
           ),
         ),
         Flexible(
-          child: GridView.builder(
-            itemCount: allLoadedProducts.length,
-            itemBuilder: (context, index) => GestureDetector(
-              onTap: () {
-                Navigator.of(context).pushNamed(ProductDetails.routename,
-                    arguments: allLoadedProducts[index].id);
-              },
-              child: ChangeNotifierProvider.value(
-                //create: (ctx) =>
-                value: allLoadedProducts[index],
-                child: GridCards(),
-              ),
-            ),
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2,
-              childAspectRatio: 2 / 2.8,
-              crossAxisSpacing: 10,
-              mainAxisSpacing: 10,
-            ),
-          ),
+          child: _isLoading
+              ? Center(child: CircularProgressIndicator())
+              : GridView.builder(
+                  itemCount: allLoadedProducts.length,
+                  itemBuilder: (context, index) => GestureDetector(
+                    onTap: () {
+                      Navigator.of(context).pushNamed(ProductDetails.routename,
+                          arguments: allLoadedProducts[index].id);
+                    },
+                    child: ChangeNotifierProvider.value(
+                      //create: (ctx) =>
+                      value: allLoadedProducts[index],
+                      child: GridCards(),
+                    ),
+                  ),
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    childAspectRatio: 2 / 2.8,
+                    crossAxisSpacing: 10,
+                    mainAxisSpacing: 10,
+                  ),
+                ),
         ),
       ],
     );

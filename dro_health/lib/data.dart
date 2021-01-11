@@ -36,43 +36,50 @@ const Acknowledgement = const Model(
   images: '',
 );
 
-List<String> StatesList = [
-  'state'
-      'Abia'
-      'Abuja'
-      'Adamawa'
-      'Akwa Ibom'
-      'Anambra'
-      'Bauchi'
-      'Bayelsa'
-      'Benue'
-      'Borno'
-      'Cross River'
-      'Delta'
-      'Ebonyi'
-      'Edo'
-      'Ekiti'
-      'Enugu'
-      'Gombe'
-      'Imo'
-      'Jigawa'
-      'Kaduna'
-      'Kano'
-      'Katsina'
-      'Kebbi'
-      'Kogi'
-      'Kwara'
-      'Lagos'
-      'Nasarawa'
-      'Niger'
-      'Ogun'
-      'Ondo'
-      'Osun'
-      'Oyo'
-      'Plateau'
-      'Rivers'
-      'Sokoto'
-      'Taraba'
-      'Yobe'
-      'Zamfara'
+class DropDownStateList {
+  int value;
+  String state;
+  DropDownStateList({this.state, this.value});
+}
+
+// ignore: non_constant_identifier_names
+List<DropDownStateList> StatesList = [
+  DropDownStateList(value: 1, state: 'State'),
+  DropDownStateList(value: 2, state: 'Abia'),
+  DropDownStateList(value: 3, state: 'Abuja'),
+  DropDownStateList(value: 4, state: 'Adamawa'),
+  DropDownStateList(value: 5, state: 'Akwa Ibom'),
+  DropDownStateList(value: 6, state: 'Anambra'),
+  DropDownStateList(value: 7, state: 'Bauchi'),
+  DropDownStateList(value: 8, state: 'Bayelsa'),
+  DropDownStateList(value: 9, state: 'Benue'),
+  DropDownStateList(value: 10, state: 'Borno'),
+  DropDownStateList(value: 11, state: 'Cross River'),
+  DropDownStateList(value: 12, state: 'Delta'),
+  DropDownStateList(value: 13, state: 'Ebonyi'),
+  DropDownStateList(value: 14, state: 'Edo'),
+  DropDownStateList(value: 15, state: 'Ekiti'),
+  DropDownStateList(value: 16, state: 'Enugu'),
+  DropDownStateList(value: 17, state: 'Gombe'),
+  DropDownStateList(value: 18, state: 'Imo'),
+  DropDownStateList(value: 19, state: 'Jigawa'),
+  DropDownStateList(value: 20, state: 'Kaduna'),
+  DropDownStateList(value: 21, state: 'Kano'),
+  DropDownStateList(value: 22, state: 'Katsina'),
+  DropDownStateList(value: 23, state: 'Kebbi'),
+  DropDownStateList(value: 24, state: 'Kogi'),
+  DropDownStateList(value: 25, state: 'Kwara'),
+  DropDownStateList(value: 26, state: 'Lagos'),
+  DropDownStateList(value: 27, state: 'Nasarawa'),
+  DropDownStateList(value: 28, state: 'Niger'),
+  DropDownStateList(value: 29, state: 'Ogun'),
+  DropDownStateList(value: 30, state: 'Ondo'),
+  DropDownStateList(value: 31, state: 'Osun'),
+  DropDownStateList(value: 32, state: 'Oyo'),
+  DropDownStateList(value: 33, state: 'Plateau'),
+  DropDownStateList(value: 34, state: 'Rivers'),
+  DropDownStateList(value: 35, state: 'Sokoto'),
+  DropDownStateList(value: 36, state: 'Taraba'),
+  DropDownStateList(value: 37, state: 'Yobe'),
+  DropDownStateList(value: 38, state: 'Zamfara'),
 ];

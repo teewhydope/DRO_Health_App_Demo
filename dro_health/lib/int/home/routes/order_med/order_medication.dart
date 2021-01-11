@@ -14,10 +14,25 @@ import 'package:sliding_sheet/sliding_sheet.dart';
 
 import 'widgets/numeric_step_button.dart';
 
-class OrderMedication extends StatelessWidget {
+class OrderMedication extends StatefulWidget {
+  @override
+  _OrderMedicationState createState() => _OrderMedicationState();
+}
+
+class _OrderMedicationState extends State<OrderMedication> {
   final isGreen = Color.fromRGBO(12, 184, 182, 1);
+
   final isPurple = Color.fromRGBO(122, 67, 151, 1);
+
   var _counter = 0;
+  var _isInit = true;
+  var _isLoading = false;
+
+  @override
+  void didChangeDependencies() {
+    Provider.of<Cart>(context).fetchAndSetCartItems();
+    super.didChangeDependencies();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +40,7 @@ class OrderMedication extends StatelessWidget {
       statusBarColor: Colors.white,
       statusBarBrightness: Brightness.light, // as you need dark or light
     ));
-    final cart = Provider.of<Cart>(context, listen: false);
+    final cart = Provider.of<Cart>(context);
     Provider.of<DrugProduct>(context);
 
     return Scaffold(
@@ -96,14 +111,18 @@ class OrderMedication extends StatelessWidget {
                     //color: Colors.grey,
                     height: MediaQuery.of(context).size.height * 0.65,
                     //width: double.infinity,
-                    child: ListView.builder(
+                    child: //_isLoading
+                        //? Center(child: CircularProgressIndicator())
+                        // :
+                        ListView.builder(
                       itemCount: cart.cartItem.length,
                       itemBuilder: (context, index) => Dismissible(
                         direction: DismissDirection.endToStart,
                         key: ValueKey(cart.cartItem.values.toList()[index].id),
-                        onDismissed: (direction) {
-                          Provider.of<Cart>(context, listen: false).removeItem(
-                              cart.cartItem.values.toList()[index].id);
+                        onDismissed: (direction) async {
+                          await Provider.of<Cart>(context, listen: false)
+                              .removeItem(
+                                  cart.cartItem.values.toList()[index].id);
                         },
                         confirmDismiss: (direction) => showDialog(
                           context: context,

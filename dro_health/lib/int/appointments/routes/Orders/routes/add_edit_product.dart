@@ -3,7 +3,6 @@ import 'package:dro_health/providers/drug_products.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:step_progress_indicator/step_progress_indicator.dart';
-import 'package:ars_progress_dialog/ars_progress_dialog.dart';
 
 class AddEditProduct extends StatefulWidget {
   static const routename = '/add_edit_product';
@@ -85,31 +84,48 @@ class _AddEditProductState extends State<AddEditProduct> {
     _isInit = false;
   }
 
-  void _saveForm() {
+  Future<void> _saveForm() async {
     final isValid = _formKey.currentState.validate();
     if (!isValid) {
       return;
     }
     _formKey.currentState.save();
-
     setState(() {
       _isLoading = true;
     });
     if (_editedProduct.id != null) {
-      Provider.of<DrugProducts>(context, listen: false)
+      await Provider.of<DrugProducts>(context, listen: false)
           .updateProducts(_editedProduct.id, _editedProduct);
-      setState(() {
-        _isLoading = false;
-      });
+
       Navigator.of(context).pop();
     } else {
-      Provider.of<DrugProducts>(context, listen: false)
-          .addProduct(_editedProduct)
-          .then((_) {
-        setState(() {
-          _isLoading = false;
-        });
+      try {
+        await Provider.of<DrugProducts>(context, listen: false)
+            .addProduct(_editedProduct);
         Navigator.of(context).pop();
+      } catch (error) {
+        await showDialog(
+          context: context,
+          builder: (ctx) => AlertDialog(
+            title: Text('An error occured'),
+            content: Text('Something went wrong.'),
+            actions: [
+              FlatButton(
+                  onPressed: () {
+                    Navigator.of(ctx).pop();
+                  },
+                  child: Text('Okay'))
+            ],
+          ),
+        );
+        // } finally {
+        //   setState(() {
+        //     _isLoading = false;
+        //   });
+        //   Navigator.of(context).pop();
+      }
+      setState(() {
+        _isLoading = false;
       });
     }
 

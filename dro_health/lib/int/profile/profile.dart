@@ -1,3 +1,4 @@
+import 'package:dro_health/int/profile/routes/edit_info.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
@@ -10,7 +11,6 @@ class ProfileScreen extends StatelessWidget {
       statusBarBrightness: Brightness.dark, // as you need dark or light
     ));
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
       home: Scaffold(
         resizeToAvoidBottomInset: false,
         body: SingleChildScrollView(
@@ -54,10 +54,16 @@ class ProfileScreen extends StatelessWidget {
                               size: 40,
                               color: Colors.white,
                             ),
-                            Icon(
-                              Icons.edit_rounded,
-                              size: 30,
-                              color: Colors.white,
+                            GestureDetector(
+                              onTap: () {
+                                Navigator.pushNamed(
+                                    context, EditInfo.routename);
+                              },
+                              child: Icon(
+                                Icons.edit_rounded,
+                                size: 30,
+                                color: Colors.white,
+                              ),
                             )
                           ],
                         ),

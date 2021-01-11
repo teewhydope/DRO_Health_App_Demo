@@ -136,8 +136,8 @@ class _ProductDetailsState extends State<ProductDetails> {
               ),
               RaisedButton(
                 //padding: EdgeInsets.symmetric(horizontal: 20),
-                onPressed: () {
-                  cart.addItemToCart(
+                onPressed: () async {
+                  await cart.addItemToCart(
                     productsData.id,
                     productsData.price,
                     productsData.title,
